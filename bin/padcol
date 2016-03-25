@@ -1,0 +1,77 @@
+#!/usr/bin/ruby
+
+require 'fileutils'
+require 'getoptlong'
+
+opts = GetoptLong.new(
+  [ '--file', '-f', GetoptLong::REQUIRED_ARGUMENT ],
+  [ '--help', '-h', GetoptLong::NO_ARGUMENT ]
+)
+
+file = nil
+opts.each do |opt, arg|
+  case opt
+    when '--file'
+      file = arg
+  end
+end
+
+if file == nil
+  puts "No file provided."
+else
+  if File.exist?(file)
+    colSizes = []
+    maxColCount = 1
+
+    # Determine Column Widths
+    File.open(file) do |content|
+      content.each_line do |line|
+        if line !~ /^#/ then 
+          colCount = 1
+          columns = line.split(";")
+          columns.each { |col|
+            if colSizes[colCount].nil? or colSizes[colCount] < col.length then
+              colSizes[colCount] = col.length
+            end
+            colCount += 1
+          }
+          if maxColCount < colCount then
+            maxColCount = colCount
+          end
+        end
+      end
+    end
+
+    # Print Lines
+    output = File.open(file+".new", "w")
+    File.open(file) do |content|
+      content.each_line do |line|
+        if line !~ /^#/ then
+          outputLine = ""
+          colCount = 1
+          columns = line.gsub("\n",' ').split(";")
+          columns.each { |col|
+            if colCount > 1 then
+              outputLine += ";"
+            end
+            outputLine += sprintf("%-" + colSizes[colCount].to_s + "s", col)
+            colCount += 1
+          }
+          outputLine += "\n"
+ 
+          output.write(outputLine)
+          print outputLine
+        else
+          output.write(line)
+          puts line
+        end
+      end
+    end
+    output.close
+
+    FileUtils.mv(file + ".new", file)
+
+  else
+    puts "File (" + file + ") does not exist."
+  end
+end
