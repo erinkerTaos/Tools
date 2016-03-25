@@ -54,16 +54,16 @@ else
             if colCount > 1 then
               outputLine += ";"
             end
-            outputLine += sprintf("%-" + colSizes[colCount].to_s + "s", col)
+            outputLine += sprintf("%-" + colSizes[colCount].to_s + "s", col.gsub(/^\s+/,' '))
             colCount += 1
           }
           outputLine += "\n"
  
           output.write(outputLine)
-          print outputLine
+          #print outputLine
         else
-          output.write(line)
-          puts line
+          output.write(line.gsub(/\s+;\s+/,' ; '))
+          #puts line
         end
       end
     end
