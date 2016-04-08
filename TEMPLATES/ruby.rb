@@ -36,6 +36,11 @@ def print_help_and_exit()
 end
 
 #-------------------------------#
+# Constants                     #
+#-------------------------------#
+VERBOSE = 1
+
+#-------------------------------#
 # Varaibles                     #
 #-------------------------------#
 verboseLevel = 0
@@ -57,6 +62,12 @@ opts.each do |opt, arg|
       print_help_and_exit()
     when '--verbose'
       verboseLevel = 1
+  end
+end
+
+if verboseLevel > VERBOSE then
+  unless verboseLevel.nil? then
+    printf("DEBUG: %-40s %s\n", "Verbosity Level", verboseLevel)
   end
 end
 
