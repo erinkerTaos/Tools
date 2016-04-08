@@ -14,10 +14,10 @@ require 'getoptlong'
 def print_help_and_exit()
   puts ""
   puts "NAME"
-  puts "        <SCRIPT> - <QUICK DESCRIPTION>"
+  puts "        " + File.basename($0) + " - <QUICK DESCRIPTION>"
   puts ""
   puts "SYNOPSIS"
-  puts "        <SCRIPT> [OPTION]"
+  puts "        " + File.basename($0) + " [OPTION]"
   puts ""
   puts "DESCRIPTION"
   puts "        <DESCRIBE IN DETAIL>"
